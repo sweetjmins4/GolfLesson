@@ -9,7 +9,7 @@ export const SUPABASE_URL = 'https://bjxdkphgtpdjkzkbbjfg.supabase.co';
 export const SUPABASE_ANON_KEY = 'sb_publishable_jBnSj3yK2aCS-8kiFBSFEw_JKybq6g2';
 
 // 사이트 상단에 표시될 이름
-export const SITE_NAME = '정프로의 골프레슨 예약';
+export const SITE_NAME = '정프로의 골프레슨';
 
 // 회원이 확정 예약을 취소할 수 있는 마감 (레슨 시작 몇 시간 전까지)
 // schema.sql 의 cancel_booking 함수 안 interval '24 hours' 와 같은 값으로 맞춰 주세요.
