@@ -129,6 +129,7 @@ const MEMBER_TABS = {
   profile: { label: '내 정보',   render: memberProfile },
 };
 const PRO_TABS = {
+  profile:  { label: '강사 프로필', render: proProfile },
   inbox:    { label: '승인함',     render: proInbox },
   schedule: { label: '일정표',     render: proSchedule },
   slots:    { label: '타임 만들기', render: proSlots },
@@ -147,18 +148,22 @@ async function render() {
   }
   const m = state.me;
   app.innerHTML = `
-    <header class="top">
-      <div class="brand">⛳ ${esc(SITE_NAME)}</div>
-      <div class="who">
-        <span>${esc(m.name || m.email)} ${m.role === 'pro' ? '프로' : '님'}</span>
-        ${m.role === 'pro' ? '' : `<span class="pill">잔여 ${m.credits}회</span>`}
-        <button class="link" data-action="logout">로그아웃</button>
-      </div>
-    </header>
-    <nav class="tabs">${Object.entries(tabs).map(([k, t]) =>
-      `<button class="${k === state.tab ? 'on' : ''}" data-action="tab" data-tab="${k}">${t.label}</button>`).join('')}
-    </nav>
-    <main>${html}</main>`;
+    <div class="workspace">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <div class="brand">⛳ ${esc(SITE_NAME)}</div>
+          <div class="who">
+            <span>${esc(m.name || m.email)} ${m.role === 'pro' ? '프로' : '님'}</span>
+            ${m.role === 'pro' ? '<span class="pill">프로</span>' : `<span class="pill">잔여 ${m.credits}회</span>`}
+          </div>
+        </div>
+        <nav class="tabs">${Object.entries(tabs).map(([k, t]) =>
+          `<button class="${k === state.tab ? 'on' : ''}" data-action="tab" data-tab="${k}">${t.label}</button>`).join('')}
+        </nav>
+        <button class="link logout-link" data-action="logout">로그아웃</button>
+      </aside>
+      <main class="content">${html}</main>
+    </div>`;
 }
 
 function weekNav() {
@@ -326,6 +331,72 @@ function logList(logs) {
 /* =====================================================================
    프로 화면
    ===================================================================== */
+async function proProfile() {
+  return `<div class="profile-page">
+    <div class="card profile-hero">
+      <div class="profile-photo-wrap">
+        <img class="profile-photo" src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=900&q=80" alt="프로 골퍼 사진" />
+      </div>
+      <div class="profile-copy">
+        <p class="eyebrow">Premier Golf Coach</p>
+        <h2>김프로</h2>
+        <p class="lead">기본기와 경기 감각을 동시에 키우는 레슨을 추구합니다. 초보자는 정확한 스윙 루틴을, 중급 이상은 구질과 심리 관리까지 함께 다듬어 안정적인 플레이를 만들어갑니다.</p>
+        <div class="profile-meta">
+          <span class="pill">KPGA 투어 경력</span>
+          <span class="pill">국가대표 참여</span>
+          <span class="pill">1:1 맞춤 코칭</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card profile-block">
+      <div class="section-head">
+        <h3>나의 이력</h3>
+        <span class="mini-tag">Career</span>
+      </div>
+      <ul class="history-list">
+        <li>
+          <strong>KPGA 투어 우승 10회</strong>
+          <span>국내 주요 대회에서 우승하며 시즌 내내 안정적인 경기력과 압박 상황 대응력을 인정받았습니다.</span>
+        </li>
+        <li>
+          <strong>올림픽 국가대표 참여</strong>
+          <span>국가대표 선발 과정과 국제 대회 경험을 바탕으로, 큰 무대에서도 흔들리지 않는 플레이를 가르칩니다.</span>
+        </li>
+        <li>
+          <strong>최연소 골프 프로 데뷔</strong>
+          <span>젊은 나이에도 꾸준한 실전 경쟁을 통해 프로 무대에서 인정받았고, 이후 코칭에도 뛰어난 감각을 보였습니다.</span>
+        </li>
+        <li>
+          <strong>아카데미 지도 경험</strong>
+          <span>초보자부터 상급자까지 자세, 샷 메커니즘, 심리 관리, 라운드 전략까지 종합적으로 지도하고 있습니다.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card profile-block">
+      <div class="section-head">
+        <h3>주요 성과</h3>
+        <span class="mini-tag">Achievements</span>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-box">
+          <strong>10회</strong>
+          <span>KPGA 투어 우승</span>
+        </div>
+        <div class="stat-box">
+          <strong>국가대표</strong>
+          <span>올림픽 국가대표 참여</span>
+        </div>
+        <div class="stat-box">
+          <strong>1:1</strong>
+          <span>맞춤형 레슨 운영</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
 async function proInbox() {
   const [reqs, newbies] = await Promise.all([
     q(sb.from('bookings')
