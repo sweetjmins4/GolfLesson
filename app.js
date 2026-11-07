@@ -151,7 +151,7 @@ async function render() {
     <div class="workspace">
       <aside class="sidebar">
         <div class="brand-block">
-          <div class="brand">⛳ ${esc(SITE_NAME)}</div>
+          <div class="brand">${esc(SITE_NAME)}</div>
           <div class="who">
             <span>${esc(m.name || m.email)} ${m.role === 'pro' ? '프로' : '님'}</span>
             ${m.role === 'pro' ? '<span class="pill">프로</span>' : `<span class="pill">잔여 ${m.credits}회</span>`}
@@ -185,7 +185,7 @@ const empty = (msg) => `<p class="muted small empty">${msg}</p>`;
 function renderAuth() {
   const login = state.authMode === 'login';
   app.innerHTML = `<div class="auth card">
-    <h1>⛳ ${esc(SITE_NAME)}</h1>
+    <h1>${esc(SITE_NAME)}</h1>
     <p class="muted">레슨 예약을 위해 ${login ? '로그인' : '회원가입'}해 주세요.</p>
     <div class="seg">
       <button class="${login ? 'on' : ''}" data-action="authMode" data-mode="login">로그인</button>
@@ -766,3 +766,4 @@ app.addEventListener('input', (e) => {
   const v = e.target.value.trim().toLowerCase();
   app.querySelectorAll('[data-search]').forEach((el) => { el.hidden = !!v && !el.dataset.search.includes(v); });
 });
+
